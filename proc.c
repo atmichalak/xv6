@@ -46,6 +46,8 @@ allocproc(void)
 
 found:
   p->state = EMBRYO;
+  p->queuetype = 0;
+  p->quantumsize = 4;
   p->pid = nextpid++;
   release(&ptable.lock);
 
@@ -283,6 +285,7 @@ scheduler(void)
       proc = p;
       switchuvm(p);
       p->state = RUNNING;
+      cprintf("Process %s is of Process ID %d, Queue Type %d, and Quantum Size %d\n", p->name, p->pid, p->queuetype, p->quantumsize);
       swtch(&cpu->scheduler, proc->context);
       switchkvm();
 
